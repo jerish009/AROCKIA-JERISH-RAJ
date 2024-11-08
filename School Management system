@@ -1,0 +1,73 @@
+include <stdio.h>
+#include <string.h>
+
+#define MAX_STUDENTS 100
+
+typedef struct {
+	char name[50];
+	int attendance;
+} Student;
+Student students[MAX_STUDENTS];
+int studentCount = 0;
+void addStudent(char* name) {
+	if (studentCount < MAX_STUDENTS) {
+		strcpy(students[studentCount].name, name);
+		students[studentCount].attendance = 0;
+		studentCount++;
+	} else {
+		printf("Cannot add more students, maximum limit reached.\n");
+	}
+}
+void markAttendance(char* name) {
+	for (int i = 0; i < studentCount; i++) {
+		if (strcmp(students[i].name, name) == 0) {
+			students[i].attendance++;
+			printf("Attendance marked for %s\n", name);
+			return;
+		}
+	}
+	printf("Student %s not found.\n", name);
+}
+void displayStudents() {
+	printf("Name\t\tAttendance\n");
+	printf("-------------------------\n");
+	for (int i = 0; i < studentCount; i++) {
+		printf("%s\t\t%d\n", students[i].name, students[i].attendance);
+	}
+}
+int main() {
+	int choice;
+	char name[50];
+
+	while (1) {
+		printf("\nSchool Management System\n");
+		printf("1. Add Student\n");
+		printf("2. Mark Attendance\n");
+		printf("3. Display Students\n");
+		printf("4. Exit\n");
+		printf("Enter your choice: ");
+		scanf("%d", &choice);
+		getchar();
+		switch (choice) {
+			case 1:
+				printf("Enter student name: ");
+				fgets(name, sizeof(name), stdin);
+				name[strcspn(name, "\n")] = '\0'; 
+				addStudent(name);
+				break;
+			case 2:
+				printf("Enter student name: ");
+				fgets(name, sizeof(name), stdin);
+				name[strcspn(name, "\n")] = '\0'; 
+				markAttendance(name);
+				break;
+			case 3:
+				displayStudents();
+				break;
+			case 4:
+				return 0;
+            default:
+				printf("Invalid choice. Please try again.\n");
+		}
+	}return 0;
+}
